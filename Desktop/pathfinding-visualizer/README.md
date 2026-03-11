@@ -1,70 +1,82 @@
-# Getting Started with Create React App
+# 🧭 Pathfinding Visualizer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> Visualize 6 pathfinding algorithms in real time — watch how each one explores the grid differently, generates mazes, and finds (or fails to find) the shortest path.
 
-## Available Scripts
+[![Live Demo](https://img.shields.io/badge/▶%20Live%20Demo-Play%20Now-6366f1?style=for-the-badge)](https://pathfinding-visualizer-eta-eight.vercel.app)
+[![React](https://img.shields.io/badge/React-18-61dafb?style=for-the-badge&logo=react)](https://reactjs.org)
+[![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-000?style=for-the-badge&logo=vercel)](https://vercel.com)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🎮 [Click here to play → pathfinding-visualizer-eta-eight.vercel.app](https://pathfinding-visualizer-eta-eight.vercel.app)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Algorithms
 
-### `npm test`
+| Algorithm | Weighted | Optimal | Time Complexity | Data Structure |
+|-----------|----------|---------|-----------------|----------------|
+| Dijkstra | ✅ | ✅ | O(E log V) | MinHeap |
+| A\* Search | ✅ | ✅ | O(E log V) | MinHeap + Heuristic |
+| BFS | ❌ | ✅ | O(V + E) | Queue (FIFO) |
+| DFS | ❌ | ❌ | O(V + E) | Stack (LIFO) |
+| Greedy BFS | ❌ | ❌ | O(E log V) | MinHeap + Heuristic |
+| Bidirectional BFS | ❌ | ✅ | O(b^(d/2)) | Dual Queue |
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Features
 
-### `npm run build`
+- **6 pathfinding algorithms** with real-time animation
+- **MinHeap implementation** for O(log n) priority queue operations — not array sort
+- **3 maze generators** — Recursive Backtracking, Prim's Algorithm, Random
+- **Weighted nodes** — place cost ×5 nodes to demonstrate Dijkstra vs Greedy differences
+- **Complexity panel** — time complexity, space complexity, optimal/weighted info per algorithm
+- **Draggable start/end nodes** — reposition without redrawing walls
+- **3 animation speeds** — Slow, Normal, Fast
+- **Stats** — nodes visited, path length, and calculation time after each run
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## How to Use
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Select an algorithm from the top bar
+2. Click and drag on the grid to draw walls
+3. Toggle **⚖ Weights** to place weighted nodes
+4. Click **Visualize** to run
+5. Use **Recursive / Prim's / Random** to generate mazes
+6. Drag the green ▶ (start) or red ◉ (end) node anywhere on the grid
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Key Implementation Details
 
-### `npm run eject`
+**MinHeap** — Dijkstra, A\*, Greedy, and Bi-BFS all use a proper binary heap instead of `array.sort()`, giving true O(log n) push/pop:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```js
+class MinHeap {
+  push(v) { this.heap.push(v); this._bubbleUp(this.heap.length - 1); }
+  pop()   { /* sift down */ }
+}
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**A\* Heuristic** — Manhattan distance `h(n) = |Δrow| + |Δcol|`, admissible for 4-directional grid movement:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```js
+function manhattan(a, b) {
+  return Math.abs(a.row - b.row) + Math.abs(a.col - b.col);
+}
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+**Bidirectional BFS** — searches from both start and end simultaneously, meeting in the middle. Explores O(b^(d/2)) nodes vs O(b^d) for standard BFS.
 
-## Learn More
+## Running Locally
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+git clone https://github.com/boran77/pathfinding-visualizer.git
+cd pathfinding-visualizer
+npm install
+npm start
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Open [http://localhost:3000](http://localhost:3000)
 
-### Code Splitting
+## Built With
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- React 18
+- CSS animations (no external animation library)
+- Deployed on Vercel
